@@ -1,0 +1,21 @@
+[gd_scene load_steps=6 format=3 uid="uid://8e15q3lh2a71"]
+
+[ext_resource type="Script" path="res://scripts/duck.gd" id="1_biaul"]
+[ext_resource type="Material" uid="uid://djhaov6tajjyv" path="res://assets/materials/mat_normal.tres" id="2_8pqtv"]
+[ext_resource type="Material" uid="uid://fbmiho7dfbkb" path="res://assets/materials/mat_highlighted.tres" id="3_r6bsn"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bjcjn"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_toqka"]
+
+[node name="Duck" type="CharacterBody3D" groups=["ducks"]]
+collision_layer = 2
+script = ExtResource("1_biaul")
+normal_material = ExtResource("2_8pqtv")
+highlight_material = ExtResource("3_r6bsn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_bjcjn")
+
+[node name="BodyMesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_toqka")

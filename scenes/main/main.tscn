@@ -1,0 +1,232 @@
+[gd_scene load_steps=9 format=3 uid="uid://b0jln8tvbjy1n"]
+
+[ext_resource type="PackedScene" uid="uid://bh2mklahppagg" path="res://scenes/main/player.tscn" id="1_yns6y"]
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="2_288ru"]
+[ext_resource type="PackedScene" uid="uid://6rs2sd0g3eh0" path="res://scenes/main/box.tscn" id="2_igf6o"]
+[ext_resource type="PackedScene" uid="uid://8e15q3lh2a71" path="res://scenes/ducks/duck.tscn" id="3_dg6jb"]
+[ext_resource type="Script" path="res://scripts/zone.gd" id="5_fnass"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_u2kuf"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_4jm6v"]
+data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_w2tic"]
+
+[node name="Main" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.912998, 0.407964, 0, -0.407964, 0.912998, 0, 0.428689, 0)
+
+[node name="Player" parent="." instance=ExtResource("1_yns6y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("2_288ru")
+
+[node name="UI" type="Node" parent="."]
+
+[node name="Control" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -576.0
+offset_top = -326.5
+offset_right = 576.0
+offset_bottom = 326.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="InteractPrompt" type="Label" parent="UI/Control"]
+visible = false
+layout_mode = 0
+offset_left = 312.0
+offset_top = 306.5
+offset_right = 840.0
+offset_bottom = 340.5
+theme_override_font_sizes/font_size = 24
+text = "[E] Interact"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NamingPanel" type="Panel" parent="UI/Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -576.0
+offset_top = -325.5
+offset_right = 576.0
+offset_bottom = 325.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="NamingLabel" type="Label" parent="UI/Control/NamingPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -98.5
+offset_top = -100.0
+offset_right = 98.5
+offset_bottom = -66.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "Name your duck:"
+horizontal_alignment = 1
+
+[node name="NameInput" type="LineEdit" parent="UI/Control/NamingPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -184.0
+offset_top = -44.0
+offset_right = 192.0
+offset_bottom = -2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+
+[node name="ConfirmButton" type="Button" parent="UI/Control/NamingPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -51.0
+offset_top = 28.0
+offset_right = 51.0
+offset_bottom = 70.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "Confirm"
+
+[node name="ObjectiveLabel" type="Label" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -248.0
+offset_top = 26.5
+offset_right = -18.0
+offset_bottom = 60.5
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 24
+text = "Ducks collected: 0/5"
+
+[node name="ObjectivePopup" type="Panel" parent="UI/Control"]
+visible = false
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 651.0
+
+[node name="Label" type="Label" parent="UI/Control/ObjectivePopup"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -146.5
+offset_top = -75.0
+offset_right = 146.5
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 32
+text = "All ducks collected!"
+
+[node name="ContinueButton" type="Button" parent="UI/Control/ObjectivePopup"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -57.0
+offset_top = 29.0
+offset_right = 57.0
+offset_bottom = 71.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "Continue"
+
+[node name="Box" parent="." instance=ExtResource("2_igf6o")]
+transform = Transform3D(4, 0, 0, 0, 3, 0, 0, 0, 8.2, 11.3903, 0.996771, -12.0282)
+
+[node name="Ground" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
+mesh = SubResource("PlaneMesh_u2kuf")
+skeleton = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
+shape = SubResource("ConcavePolygonShape3D_4jm6v")
+
+[node name="Ducks" type="Node" parent="."]
+
+[node name="Duck" parent="Ducks" instance=ExtResource("3_dg6jb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.5, 15)
+speed = 1.0
+
+[node name="Duck2" parent="Ducks" instance=ExtResource("3_dg6jb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.5, 19)
+speed = 1.0
+is_false_duck = true
+
+[node name="Duck3" parent="Ducks" instance=ExtResource("3_dg6jb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.5, 11)
+speed = 1.0
+is_false_duck = true
+
+[node name="Duck4" parent="Ducks" instance=ExtResource("3_dg6jb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.5, 8)
+speed = 1.0
+
+[node name="Duck5" parent="Ducks" instance=ExtResource("3_dg6jb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 15)
+speed = 1.0
+
+[node name="LakeZone" type="Area3D" parent="." groups=["zones"]]
+transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 17)
+script = ExtResource("5_fnass")
+context = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LakeZone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_w2tic")
+
+[node name="PenZone" type="Area3D" parent="." groups=["zones"]]
+transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, 0, 0, -19)
+collision_mask = 3
+script = ExtResource("5_fnass")
+context = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PenZone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_w2tic")
+
+[connection signal="text_submitted" from="UI/Control/NamingPanel/NameInput" to="Player" method="_on_name_input_text_submitted"]
+[connection signal="pressed" from="UI/Control/NamingPanel/ConfirmButton" to="Player" method="_on_confirm_button_pressed"]
+[connection signal="pressed" from="UI/Control/ObjectivePopup/ContinueButton" to="GameManager" method="_on_continue_button_pressed"]
+[connection signal="body_entered" from="LakeZone" to="LakeZone" method="_on_body_entered"]
+[connection signal="body_exited" from="LakeZone" to="LakeZone" method="_on_body_exited"]
+[connection signal="body_entered" from="PenZone" to="PenZone" method="_on_body_entered"]
+[connection signal="body_exited" from="PenZone" to="PenZone" method="_on_body_exited"]
