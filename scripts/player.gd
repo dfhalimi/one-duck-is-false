@@ -13,12 +13,17 @@ extends CharacterBody3D
 @onready var name_input: LineEdit = $"../UI/Control/NamingPanel/NameInput"
 @onready var confirm_button: Button = $"../UI/Control/NamingPanel/ConfirmButton"
 
+@onready var food_tray: StaticBody3D = $"../FoodTray"
+
+signal has_fed_duck
+
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 var y_velocity := 0.0
 var pitch := 0.0
 var last_hovered_duck: Node = null
 var current_zone: String = ""
 var held_duck: Node3D = null
+var is_holding_food: bool = false
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -27,6 +32,7 @@ func _ready():
 		zone.player_exited_zone.connect(_on_player_exited_zone)
 	
 	name_input.text_submitted.connect(_on_name_entered)
+	food_tray.has_food_taken.connect(_on_has_food_taken)
 	
 func _process(_delta):
 	# Priority: if holding a duck, and in the pen → show drop prompt
@@ -49,7 +55,10 @@ func _process(_delta):
 				interact_prompt_label.visible = true
 				
 			if current_zone == "pen":
-				interact_prompt_label.text = "[E] Pet " + hit.get_duck_name()
+				if is_holding_food:
+					interact_prompt_label.text = "[E] Feed " + hit.get_duck_name()
+				else:
+					interact_prompt_label.text = "[E] Pet " + hit.get_duck_name()
 				interact_prompt_label.visible = true
 				
 			# Handle highlighting
@@ -114,7 +123,12 @@ func _unhandled_input(event):
 						pick_up(hit)
 				elif current_zone == "pen":
 					if !held_duck:
-						hit.pet()
+						if is_holding_food:
+							hit.feed()
+							has_fed_duck.emit()
+							is_holding_food = false
+						else:
+							hit.pet()
 				
 func _on_player_entered_zone(context: int):
 	match context:
@@ -205,3 +219,6 @@ func _on_confirm_button_pressed():
 func _on_name_entered(text):
 	if text.strip_edges() != "":
 		_on_confirm_button_pressed()
+		
+func _on_has_food_taken():
+	is_holding_food = true

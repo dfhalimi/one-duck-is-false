@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://cq1305xcyvifm"]
+
+[ext_resource type="Script" path="res://scripts/mailbox.gd" id="1_c5yot"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mfmw1"]
+size = Vector3(0.634888, 1.45, 0.78418)
+
+[sub_resource type="BoxMesh" id="BoxMesh_g8rpi"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_aekag"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rkewc"]
+size = Vector3(1.87939, 1.39984, 2.13437)
+
+[node name="Mailbox" type="StaticBody3D"]
+script = ExtResource("1_c5yot")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0108032, 0.348309, -0.00146484)
+shape = SubResource("BoxShape3D_mfmw1")
+
+[node name="MailboxBody" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.2, 0, 0, 0, 0.7, 0, 0, 0, 0.2, 0, 0, 0)
+mesh = SubResource("BoxMesh_g8rpi")
+
+[node name="MailboxHead" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 0.666027, 0)
+mesh = SubResource("BoxMesh_aekag")
+
+[node name="InteractionArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0202637, 0.368317, 0.822783)
+shape = SubResource("BoxShape3D_rkewc")
+
+[node name="PromptLabel" type="Label3D" parent="InteractionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.671156, 0.524283)
+text = "[E] Read Mail"
+
+[connection signal="body_entered" from="InteractionArea" to="." method="_on_body_entered"]
+[connection signal="body_exited" from="InteractionArea" to="." method="_on_body_exited"]

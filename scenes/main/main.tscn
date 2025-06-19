@@ -1,10 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://b0jln8tvbjy1n"]
+[gd_scene load_steps=12 format=3 uid="uid://b0jln8tvbjy1n"]
 
 [ext_resource type="PackedScene" uid="uid://bh2mklahppagg" path="res://scenes/main/player.tscn" id="1_yns6y"]
 [ext_resource type="Script" path="res://scripts/game_manager.gd" id="2_288ru"]
 [ext_resource type="PackedScene" uid="uid://6rs2sd0g3eh0" path="res://scenes/main/box.tscn" id="2_igf6o"]
 [ext_resource type="PackedScene" uid="uid://8e15q3lh2a71" path="res://scenes/ducks/duck.tscn" id="3_dg6jb"]
+[ext_resource type="Script" path="res://scripts/objective_manager.gd" id="3_u8afp"]
 [ext_resource type="Script" path="res://scripts/zone.gd" id="5_fnass"]
+[ext_resource type="PackedScene" uid="uid://cq1305xcyvifm" path="res://scenes/main/mailbox.tscn" id="6_3xd66"]
+[ext_resource type="PackedScene" uid="uid://b3xyx2e5ubw4f" path="res://scenes/main/food_tray.tscn" id="8_8htiy"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_u2kuf"]
 
@@ -19,10 +22,13 @@ data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0
 transform = Transform3D(1, 0, 0, 0, 0.912998, 0.407964, 0, -0.407964, 0.912998, 0, 0.428689, 0)
 
 [node name="Player" parent="." instance=ExtResource("1_yns6y")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.928, 1, 2.9959)
 
 [node name="GameManager" type="Node" parent="."]
 script = ExtResource("2_288ru")
+
+[node name="ObjectiveManager" type="Node" parent="."]
+script = ExtResource("3_u8afp")
 
 [node name="UI" type="Node" parent="."]
 
@@ -128,13 +134,13 @@ grow_horizontal = 0
 theme_override_font_sizes/font_size = 24
 text = "Ducks collected: 0/5"
 
-[node name="ObjectivePopup" type="Panel" parent="UI/Control"]
+[node name="NextDayPopup" type="Panel" parent="UI/Control"]
 visible = false
 layout_mode = 0
 offset_right = 1152.0
 offset_bottom = 651.0
 
-[node name="Label" type="Label" parent="UI/Control/ObjectivePopup"]
+[node name="Label" type="Label" parent="UI/Control/NextDayPopup"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -142,32 +148,20 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -146.5
-offset_top = -75.0
+offset_top = -22.5
 offset_right = 146.5
-offset_bottom = -30.0
+offset_bottom = 22.5
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 32
-text = "All ducks collected!"
+text = "The next day..."
+horizontal_alignment = 1
 
-[node name="ContinueButton" type="Button" parent="UI/Control/ObjectivePopup"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -57.0
-offset_top = 29.0
-offset_right = 57.0
-offset_bottom = 71.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 24
-text = "Continue"
-
-[node name="Box" parent="." instance=ExtResource("2_igf6o")]
+[node name="Pen" parent="." instance=ExtResource("2_igf6o")]
 transform = Transform3D(4, 0, 0, 0, 3, 0, 0, 0, 8.2, 11.3903, 0.996771, -12.0282)
+
+[node name="House" parent="." instance=ExtResource("2_igf6o")]
+transform = Transform3D(-1.74846e-07, 0, 8.2, 0, 3, 0, -4, 0, -3.58433e-07, 32.3903, 0.996771, -15.0282)
 
 [node name="Ground" type="StaticBody3D" parent="."]
 
@@ -210,7 +204,6 @@ script = ExtResource("5_fnass")
 context = 1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="LakeZone"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 shape = SubResource("BoxShape3D_w2tic")
 
 [node name="PenZone" type="Area3D" parent="." groups=["zones"]]
@@ -220,13 +213,28 @@ script = ExtResource("5_fnass")
 context = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PenZone"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 shape = SubResource("BoxShape3D_w2tic")
+
+[node name="HouseZone" type="Area3D" parent="." groups=["zones"]]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 34, 0, -15)
+collision_mask = 3
+script = ExtResource("5_fnass")
+context = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HouseZone"]
+shape = SubResource("BoxShape3D_w2tic")
+
+[node name="Mailbox" parent="." instance=ExtResource("6_3xd66")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0.3096, -6)
+
+[node name="FoodTray" parent="." instance=ExtResource("8_8htiy")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 8.47321, 0.398293, -13.0447)
 
 [connection signal="text_submitted" from="UI/Control/NamingPanel/NameInput" to="Player" method="_on_name_input_text_submitted"]
 [connection signal="pressed" from="UI/Control/NamingPanel/ConfirmButton" to="Player" method="_on_confirm_button_pressed"]
-[connection signal="pressed" from="UI/Control/ObjectivePopup/ContinueButton" to="GameManager" method="_on_continue_button_pressed"]
 [connection signal="body_entered" from="LakeZone" to="LakeZone" method="_on_body_entered"]
 [connection signal="body_exited" from="LakeZone" to="LakeZone" method="_on_body_exited"]
 [connection signal="body_entered" from="PenZone" to="PenZone" method="_on_body_entered"]
 [connection signal="body_exited" from="PenZone" to="PenZone" method="_on_body_exited"]
+[connection signal="body_entered" from="HouseZone" to="HouseZone" method="_on_body_entered"]
+[connection signal="body_exited" from="HouseZone" to="HouseZone" method="_on_body_exited"]

@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://b3xyx2e5ubw4f"]
+
+[ext_resource type="Script" path="res://scripts/food_tray.gd" id="1_xvmjc"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_dr3aw"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7umpb"]
+size = Vector3(1.99756, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2fy15"]
+size = Vector3(2.94217, 1.28711, 3.01993)
+
+[node name="FoodTray" type="StaticBody3D"]
+script = ExtResource("1_xvmjc")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_dr3aw")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00195312, 0, 0)
+shape = SubResource("BoxShape3D_7umpb")
+
+[node name="InteractionArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.45178)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0797176, 0.160002, -0.632966)
+shape = SubResource("BoxShape3D_2fy15")
+
+[node name="PromptLabel" type="Label3D" parent="InteractionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.383984, -0.904571)
+visible = false
+text = "[E] Take food"
+
+[connection signal="body_entered" from="InteractionArea" to="." method="_on_body_entered"]
+[connection signal="body_exited" from="InteractionArea" to="." method="_on_body_exited"]

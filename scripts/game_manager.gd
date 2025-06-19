@@ -1,28 +1,33 @@
 extends Node
 
-@export var ducks_required: int = 5
-
-@onready var objective_label: Label = get_tree().get_root().get_node("Main/UI/Control/ObjectiveLabel")
 @onready var pen_zone: Zone3D = $"../PenZone"
-@onready var objective_popup: Panel = $"../UI/Control/ObjectivePopup"
-@onready var continue_button: Button = $"../UI/Control/ObjectivePopup/ContinueButton"
+@onready var house_zone: Zone3D = $"../HouseZone"
+@onready var day_popup: Panel = $"../UI/Control/NextDayPopup"
 @onready var player: CharacterBody3D = $"../Player"
+@onready var objective_manager: Node = $"../ObjectiveManager"
+
+signal next_day_reached
 
 var ducks_in_pen := 0
 var last_duck_count := -1
-var objective_completed := false
+var current_day := 1
 
-func _ready():
-	update_duck_label()
+func _ready() -> void:
+	house_zone.player_entered_zone.connect(check_win_condition)
 	
 func _process(_delta) -> void:
-	if not objective_completed:
-		var current_count = get_duck_count_in_pen()
-		if current_count != last_duck_count:
-			ducks_in_pen = current_count
-			last_duck_count = current_count
-			update_duck_label()
-			check_win_condition()
+	var current_count = get_duck_count_in_pen()
+	if current_count != last_duck_count:
+		objective_manager.notify_event(ObjectiveManager.ObjectiveType.DUCKS_IN_PEN)
+		ducks_in_pen = current_count
+		last_duck_count = current_count
+		
+func get_ducks_in_pen():
+	var ducks = []
+	for body in pen_zone.get_overlapping_bodies():
+		if body.is_in_group("ducks"):
+			ducks.append(body)
+	return ducks
 	
 func get_duck_count_in_pen() -> int:
 	var count := 0
@@ -31,25 +36,22 @@ func get_duck_count_in_pen() -> int:
 			count += 1
 	return count
 
-func update_duck_label():
-	objective_label.text = "Ducks collected: %d / %d" % [ducks_in_pen, ducks_required]
-
-func check_win_condition():
-	if not objective_completed and ducks_in_pen >= ducks_required:
-		objective_completed = true
-		show_objective_popup()
+func check_win_condition(_context: int):
+	print("Check win condition triggered")
+	if objective_manager.has_all_objectives_completed():
+		print("All objectives completed!")
+		show_next_day_popup()
+		go_to_next_day()
 		
-func show_objective_popup():
-	objective_popup.visible = true
-	continue_button.grab_focus()
-	player.set_process_input(false)
-	player.set_physics_process(false)
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+func get_current_day():
+	return current_day
+
+func show_next_day_popup():
+	day_popup.visible = true
+	await get_tree().create_timer(2.5).timeout
+	day_popup.visible = false
 	
-func _on_continue_button_pressed():
-	objective_popup.visible = false
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	player.set_process_input(true)
-	player.set_physics_process(true)
-	
-	# Optionally: Advance to next day, reset ducks, etc.
+func go_to_next_day():
+	current_day += 1
+	next_day_reached.emit()
+	print("🌒 Welcome to Day %d" % current_day)
