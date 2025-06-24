@@ -1,23 +1,28 @@
-[gd_scene load_steps=7 format=3 uid="uid://8e15q3lh2a71"]
+[gd_scene load_steps=4 format=3 uid="uid://8e15q3lh2a71"]
 
 [ext_resource type="Script" path="res://scripts/duck.gd" id="1_biaul"]
-[ext_resource type="Material" uid="uid://djhaov6tajjyv" path="res://assets/materials/mat_normal.tres" id="2_8pqtv"]
-[ext_resource type="Material" uid="uid://fbmiho7dfbkb" path="res://assets/materials/mat_highlighted.tres" id="3_r6bsn"]
-[ext_resource type="Material" uid="uid://b8r7ck87mjoqm" path="res://assets/materials/mat_dead.tres" id="4_m0swc"]
+[ext_resource type="PackedScene" uid="uid://dacb2afccms24" path="res://assets/models/lowpoly_duck_animated.glb" id="5_2loab"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_bjcjn"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_toqka"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_cy2lh"]
+size = Vector3(0.414551, 0.689329, 0.613281)
 
 [node name="Duck" type="CharacterBody3D" groups=["ducks"]]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
 collision_layer = 2
 script = ExtResource("1_biaul")
-normal_material = ExtResource("2_8pqtv")
-highlight_material = ExtResource("3_r6bsn")
-dead_material = ExtResource("4_m0swc")
+
+[node name="DuckModelPlaceholder" parent="." instance=ExtResource("5_2loab")]
+
+[node name="Skeleton3D" parent="DuckModelPlaceholder/Sketchfab_model/root/GLTF_SceneRootNode/Armature_11/GLTF_created_0" index="0"]
+bones/2/rotation = Quaternion(-0.0291175, 2.38116e-07, -6.93627e-09, 0.999576)
+bones/3/rotation = Quaternion(-0.406163, -0.0145252, -0.0204891, 0.913456)
+bones/4/rotation = Quaternion(-0.0316575, -0.0111047, -0.0164102, 0.999302)
+bones/6/rotation = Quaternion(0.941835, -0.0180807, 0.016926, -0.335161)
+bones/7/rotation = Quaternion(-0.6311, -0.00995909, 0.00907467, 0.775585)
+bones/8/rotation = Quaternion(0.663365, -0.0366768, 0.026204, 0.746937)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_bjcjn")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0124512, 0.348916, -0.0351562)
+shape = SubResource("BoxShape3D_cy2lh")
 
-[node name="BodyMesh" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_toqka")
+[editable path="DuckModelPlaceholder"]

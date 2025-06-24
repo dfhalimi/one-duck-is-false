@@ -6,13 +6,11 @@ extends CharacterBody3D
 @export var is_false_duck: bool = false
 @export var duck_name: String
 
-@export var normal_material: Material
-@export var highlight_material: Material
-@export var dead_material: Material
-
-@onready var body_mesh: MeshInstance3D = $BodyMesh
 @onready var collision_shape_3d: CollisionShape3D = $CollisionShape3D
 @onready var objective_manager: Node = $"../../ObjectiveManager"
+@onready var animator: AnimationPlayer = $DuckModelPlaceholder/AnimationPlayer
+
+@onready var game_manager: Node = $"../../GameManager"
 
 var spawn_origin := Vector3.ZERO
 var target_pos := Vector3.ZERO
@@ -25,6 +23,9 @@ func _ready():
 	pick_new_target()
 
 func _physics_process(delta):
+	if is_dead:
+		return
+
 	move_timer -= delta
 	var distance = global_position.distance_squared_to(target_pos)
 
@@ -34,6 +35,18 @@ func _physics_process(delta):
 	var move_dir = (target_pos - global_position).normalized()
 	velocity.x = move_dir.x * speed
 	velocity.z = move_dir.z * speed
+
+	if move_dir.length_squared() > 0.01:
+		look_at(global_position + move_dir, Vector3.UP)
+
+	# Play walk animation only when moving
+	if velocity.length_squared() > 0.01:
+		if not animator.is_playing() or animator.current_animation != "walkcycle_1":
+			animator.play("walkcycle_1")
+	else:
+		if animator.is_playing():
+			animator.stop()
+
 	move_and_slide()
 
 func pick_new_target():
@@ -51,10 +64,7 @@ func set_new_spawn_origin():
 	spawn_origin = global_position
 
 func accuse():
-	if is_false_duck:
-		print("YOU FOUND THE FALSE DUCK!")
-	else:
-		print(duck_name + " was just a normal duck...")
+	game_manager.handle_accusation_result(is_false_duck)
 		
 func pet():
 	objective_manager.notify_event(ObjectiveManager.ObjectiveType.PET_DUCK, duck_name)
@@ -74,14 +84,9 @@ func feed():
 
 func get_duck_name() -> String:
 	return duck_name
-
-func highlight(enable: bool):
-	if not is_dead and body_mesh:
-		body_mesh.set_surface_override_material(0, highlight_material if enable else normal_material)
 		
 func die():
 	is_dead = true
 	set_physics_process(false)
 	set_process(false)
 	collision_shape_3d.disabled = true
-	body_mesh.set_surface_override_material(0, dead_material)

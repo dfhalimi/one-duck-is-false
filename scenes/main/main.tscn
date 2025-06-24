@@ -177,26 +177,42 @@ shape = SubResource("ConcavePolygonShape3D_4jm6v")
 [node name="Ducks" type="Node" parent="."]
 
 [node name="Duck" parent="Ducks" instance=ExtResource("3_dg6jb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.5, 15)
+transform = Transform3D(-1.5, 0, 1.31134e-07, 0, 1.5, 0, -1.31134e-07, 0, -1.5, 5.86581, 0, -13.7671)
 speed = 1.0
+duck_name = "Torben"
 
 [node name="Duck2" parent="Ducks" instance=ExtResource("3_dg6jb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.5, 19)
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -3, 0, 17)
 speed = 1.0
-is_false_duck = true
+
+[node name="Duck7" parent="Ducks" instance=ExtResource("3_dg6jb")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 3, 0, 16)
+speed = 1.0
+
+[node name="Duck8" parent="Ducks" instance=ExtResource("3_dg6jb")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -2, 0, 13)
+speed = 1.0
+
+[node name="Duck9" parent="Ducks" instance=ExtResource("3_dg6jb")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -7, 0, 10)
+speed = 1.0
 
 [node name="Duck3" parent="Ducks" instance=ExtResource("3_dg6jb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.5, 11)
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 2, 0, 11)
 speed = 1.0
-is_false_duck = true
 
 [node name="Duck4" parent="Ducks" instance=ExtResource("3_dg6jb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.5, 8)
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -2, 0, 8)
 speed = 1.0
 
 [node name="Duck5" parent="Ducks" instance=ExtResource("3_dg6jb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 15)
+transform = Transform3D(-1.5, 0, 1.31134e-07, 0, 1.5, 0, -1.31134e-07, 0, -1.5, 1.86581, 0, -13.7671)
 speed = 1.0
+duck_name = "Lady Gaga"
+
+[node name="Duck6" parent="Ducks" instance=ExtResource("3_dg6jb")]
+transform = Transform3D(-1.5, 0, 1.31134e-07, 0, 1.5, 0, -1.31134e-07, 0, -1.5, 2.11281, 0, -9.75912)
+duck_name = "Super Duck"
 
 [node name="LakeZone" type="Area3D" parent="." groups=["zones"]]
 transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 17)

@@ -10,9 +10,11 @@ enum ObjectiveType { DUCKS_IN_PEN, PET_DUCK, FEED_DUCKS }
 var objective_list := []
 var all_objectives_completed : bool = false
 var has_started_objectives_for_the_day : bool = false
+var accuse_objective_text_displayed : bool = false
 
 func _ready():
 	mailbox.mail_read_requested.connect(display_mail)
+	game_manager.made_wrong_accusation.connect(handle_wrong_accusation)
 	game_manager.next_day_reached.connect(reset)
 	reset_objective_ui()
 
@@ -25,7 +27,7 @@ func generate_objectives_for_day(day: int) -> Array:
 	has_started_objectives_for_the_day = true
 	match day:
 		1:
-			objectives.append({"objective_type": ObjectiveType.DUCKS_IN_PEN, "amount": 3, "completed": false})
+			objectives.append({"objective_type": ObjectiveType.DUCKS_IN_PEN, "amount": 5, "completed": false})
 		_:
 			var ducks = game_manager.get_ducks_in_pen()
 			if ducks.size() == 0:
@@ -63,10 +65,14 @@ func update_objective_ui():
 				text += "%s Feed %d ducks (%d/%d)\n" % [status, obj.amount, count, obj.amount]
 	objective_label.text = text
 	
+func handle_wrong_accusation():
+	objective_label.text = "Return back to the house"
+
 func reset():
 	reset_objective_ui()
 	all_objectives_completed = false
 	has_started_objectives_for_the_day = false
+	accuse_objective_text_displayed = false
 
 func reset_objective_ui():
 	objective_label.text = "Check mailbox"
@@ -92,13 +98,16 @@ func notify_event(event_type: ObjectiveType, data = null):
 							obj.count = 1
 						if obj.count >= obj.amount:
 							obj.completed = true
-		update_objective_ui()
+		if not has_all_objectives_completed() and not accuse_objective_text_displayed:
+			update_objective_ui()
 		check_all_completed()
 
 func check_all_completed():
 	if objective_list.all(func(o): return o.completed):
 		all_objectives_completed = true
-		objective_label.text = "Return back to the house"
+		if not accuse_objective_text_displayed:
+			objective_label.text = "Find and accuse the false duck"
+			accuse_objective_text_displayed = true
 		
 func get_objective_list():
 	return objective_list

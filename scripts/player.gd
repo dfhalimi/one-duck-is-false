@@ -15,6 +15,8 @@ extends CharacterBody3D
 
 @onready var food_tray: StaticBody3D = $"../FoodTray"
 
+@onready var game_manager: Node = $"../GameManager"
+
 signal has_fed_duck
 
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -55,7 +57,9 @@ func _process(_delta):
 				interact_prompt_label.visible = true
 				
 			if current_zone == "pen":
-				if is_holding_food:
+				if game_manager.can_accuse():
+					interact_prompt_label.text = "[E] Accuse " + hit.get_duck_name()
+				elif is_holding_food:
 					interact_prompt_label.text = "[E] Feed " + hit.get_duck_name()
 				else:
 					interact_prompt_label.text = "[E] Pet " + hit.get_duck_name()
@@ -123,7 +127,9 @@ func _unhandled_input(event):
 						pick_up(hit)
 				elif current_zone == "pen":
 					if !held_duck:
-						if is_holding_food:
+						if hit.has_method("accuse") and game_manager.can_accuse():
+							hit.accuse()
+						elif is_holding_food:
 							hit.feed()
 							has_fed_duck.emit()
 							is_holding_food = false
@@ -169,7 +175,9 @@ func pick_up(duck: Node3D):
 	held_duck = duck
 
 	# Reset transform locally relative to hold point
+	var original_scale = duck.scale
 	duck.transform = Transform3D.IDENTITY
+	duck.scale = original_scale
 	duck.velocity = Vector3.ZERO
 	duck.set_physics_process(false)
 	duck.set_process(false)
@@ -193,7 +201,7 @@ func drop_held_duck():
 	# Calculate drop position in front of player
 	var drop_offset = -transform.basis.z.normalized() * 1.5
 	var drop_pos = global_transform.origin + drop_offset
-	drop_pos.y = 0.5  # Clamp to ground height (adjust if needed)
+	drop_pos.y = 0  # Clamp to ground height (adjust if needed)
 
 	held_duck.global_position = drop_pos
 
