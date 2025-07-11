@@ -16,6 +16,7 @@ extends CharacterBody3D
 
 @onready var food_tray: FoodTray = $"../FoodTray"
 @onready var brush_holder: BrushHolder = $"../BrushHolder"
+@onready var bath: Bath = $"../Bath"
 
 signal has_fed_duck
 
@@ -26,6 +27,7 @@ var current_zone: String = ""
 var held_duck: Duck = null
 var is_holding_food: bool = false
 var is_holding_brush: bool = false
+var in_bath_area: bool = false
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -37,8 +39,16 @@ func _ready() -> void:
 	food_tray.has_food_taken.connect(_on_has_food_taken)
 	brush_holder.has_taken_brush.connect(_on_has_taken_brush)
 	brush_holder.has_returned_brush.connect(_on_has_returned_brush)
+	bath.has_put_duck_into_bath.connect(_on_duck_put_in_bath)
+	bath.has_retrieved_duck_from_bath.connect(_on_duck_retrieved_from_bath)
+	bath.player_entered_bath_area.connect(_on_player_entered_bath_area)
+	bath.player_exited_bath_area.connect(_on_player_exited_bath_area)
 	
 func _process(_delta) -> void:
+	# Suppress normal prompts if in bath area
+	if in_bath_area:
+		interact_prompt_label.visible = false
+		return
 	# Priority: if holding a duck, show drop and contextual prompts
 	if held_duck is Duck:
 		interact_prompt_label.text = "[E] Tickle " + held_duck.duck_name + "\n[F] Put down " + held_duck.duck_name
@@ -231,3 +241,16 @@ func _on_has_taken_brush() -> void:
 	
 func _on_has_returned_brush() -> void:
 	is_holding_brush = false
+
+func _on_duck_put_in_bath(duck):
+	duck_hold_point.remove_child(duck)
+	held_duck = null
+
+func _on_duck_retrieved_from_bath(duck):
+	pick_up(duck)
+
+func _on_player_entered_bath_area():
+	in_bath_area = true
+
+func _on_player_exited_bath_area():
+	in_bath_area = false
