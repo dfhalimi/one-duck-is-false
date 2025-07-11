@@ -12,6 +12,7 @@ enum Trait {
 
 var is_dead: bool = false
 var pet_counter: int = 0
+var tickle_counter: int = 0
 var traits: Array[Trait] = []
 
 func _ready() -> void:

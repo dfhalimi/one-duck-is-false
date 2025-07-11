@@ -31,6 +31,7 @@ func die() -> void:
 	collision_shape_3d.disabled = true
 
 func pet(): interaction.pet()
+func tickle(): interaction.tickle()
 func feed(): interaction.feed()
 func accuse(): interaction.accuse()
 

@@ -10,7 +10,7 @@ func pet() -> void:
 	var duck_name: String = brain.duck_name
 	
 	if brain.traits.has(brain.Trait.DISLIKES_PETTING):
-		print(brain.duck_name + " didn't really enjoy that...")
+		print(duck_name + " didn't really enjoy that...")
 	else:
 		if pet_counter < 3:
 			print(duck_name + " flaps happily.")
@@ -20,6 +20,20 @@ func pet() -> void:
 			print(duck_name + " is thinking this is enough petting for now...")
 		else:
 			print("OH MY GOD WOULD YOU STOP PETTING " + duck_name + " ALREADY?!")
+			
+func tickle()-> void:
+	var tickle_counter: int = brain.tickle_counter
+	brain.tickle_counter += 1
+	var duck_name: String = brain.duck_name
+	
+	if tickle_counter < 3:
+		print(duck_name + " chuckles happily.")
+	elif tickle_counter < 5:
+		print(duck_name + " laughs heartily.")
+	elif tickle_counter <10:
+		print(duck_name + " is starting to panic a little.")
+	else:
+		print("STOP IT YOU MONSTER " + duck_name + " IS THIS CLOSE TO GETTING A HEART ATTACK!!!")
 
 func feed() -> void:
 	objective_manager.notify_event(Objective.Type.FEED_DUCKS)

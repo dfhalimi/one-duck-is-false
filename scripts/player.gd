@@ -35,14 +35,11 @@ func _ready() -> void:
 	food_tray.has_food_taken.connect(_on_has_food_taken)
 	
 func _process(_delta) -> void:
-	# Priority: if holding a duck, and in the pen → show drop prompt
+	# Priority: if holding a duck, show drop and contextual prompts
 	if held_duck is Duck:
-		if current_zone == "pen":
-			interact_prompt_label.text = "[E] Put " + held_duck.duck_name + " down"
-			interact_prompt_label.visible = true
-		else:
-			# You’re holding a duck but not in pen → no action
-			interact_prompt_label.visible = false
+		# Show contextual action prompt (e.g., tickle/brush)
+		interact_prompt_label.text = "[E] Tickle " + held_duck.duck_name + "\n[F] Put down " + held_duck.duck_name
+		interact_prompt_label.visible = true
 		return
 
 	# Not holding a duck → check if you're aiming at one
@@ -52,20 +49,16 @@ func _process(_delta) -> void:
 		if hit is Duck:
 			var duck: Duck = hit
 			var duck_name: String = duck.duck_name
-			
-			if current_zone == "lake":
-				interact_prompt_label.text = "[E] Pick up " + duck_name
-				interact_prompt_label.visible = true
-				
-			if current_zone == "pen":
-				if game_manager.can_accuse():
-					interact_prompt_label.text = "[E] Accuse " + duck_name
-				elif is_holding_food:
-					interact_prompt_label.text = "[E] Feed " + duck_name
-				else:
-					interact_prompt_label.text = "[E] Pet " + duck_name
-				interact_prompt_label.visible = true
-				
+
+			# Contextual action prompt (pet/feed/tickle)
+			var action_prompt := "[E] Pet " + duck_name
+			if is_holding_food:
+				action_prompt = "[E] Feed " + duck_name
+			# You can add more context checks here for other actions
+
+			# Show both prompts
+			interact_prompt_label.text = action_prompt + "\n[F] Pick up " + duck_name
+			interact_prompt_label.visible = true
 			return
 
 	# No valid duck target
@@ -105,27 +98,27 @@ func _input(event) -> void:
 		camera.rotation.x = pitch
 
 func _unhandled_input(event) -> void:
-	if event.is_action_pressed("interact"):
-		if held_duck and current_zone == "pen":
+	if event.is_action_pressed("pick_up_drop"):
+		if held_duck:
 			drop_held_duck()
 		elif ray.is_colliding():
 			var hit: Object = ray.get_collider()
+			if hit is Duck and not held_duck:
+				pick_up(hit)
+	elif event.is_action_pressed("interact"):
+		if held_duck:
+			# Contextual action on held duck (e.g., tickle/brush)
+			# For now, tickle as default
+			held_duck.tickle()
+		elif ray.is_colliding():
+			var hit: Object = ray.get_collider()
 			if hit is Duck:
-				var duck: Duck = hit
-				
-				if current_zone == "lake":
-					if !held_duck:
-						pick_up(duck)
-				elif current_zone == "pen":
-					if !held_duck:
-						if game_manager.can_accuse():
-							duck.accuse()
-						elif is_holding_food:
-							duck.feed()
-							has_fed_duck.emit()
-							is_holding_food = false
-						else:
-							duck.pet()
+				if is_holding_food:
+					hit.feed()
+					has_fed_duck.emit()
+					is_holding_food = false
+				else:
+					hit.pet()
 				
 func _on_player_entered_zone(context: int) -> void:
 	match context:
@@ -172,14 +165,15 @@ func pick_up(duck: Duck) -> void:
 	duck.velocity = Vector3.ZERO
 	duck.set_physics_process(false)
 	duck.set_process(false)
-	
-	# Show naming panel
-	naming_panel.visible = true
-	name_input.text = ""
-	name_input.grab_focus()
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	set_process_input(false)
-	set_physics_process(false)
+
+	# Only show naming panel if duck is unnamed
+	if duck.brain.duck_name.strip_edges() == "":
+		naming_panel.visible = true
+		name_input.text = ""
+		name_input.grab_focus()
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		set_process_input(false)
+		set_physics_process(false)
 	
 func drop_held_duck() -> void:
 	if not held_duck:
