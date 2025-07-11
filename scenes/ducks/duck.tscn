@@ -1,6 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://8e15q3lh2a71"]
+[gd_scene load_steps=7 format=3 uid="uid://8e15q3lh2a71"]
 
-[ext_resource type="Script" path="res://scripts/duck.gd" id="1_biaul"]
+[ext_resource type="Script" path="res://scripts/duck/duck.gd" id="1_biaul"]
+[ext_resource type="Script" path="res://scripts/duck/duck_brain.gd" id="2_skmmq"]
+[ext_resource type="Script" path="res://scripts/duck/duck_interaction.gd" id="3_0euyc"]
+[ext_resource type="Script" path="res://scripts/duck/duck_movement.gd" id="4_665th"]
 [ext_resource type="PackedScene" uid="uid://dacb2afccms24" path="res://assets/models/lowpoly_duck_animated.glb" id="5_2loab"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cy2lh"]
@@ -10,6 +13,18 @@ size = Vector3(0.414551, 0.689329, 0.613281)
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
 collision_layer = 2
 script = ExtResource("1_biaul")
+
+[node name="DuckBrain" type="Node" parent="."]
+script = ExtResource("2_skmmq")
+
+[node name="DuckInteraction" type="Node" parent="." node_paths=PackedStringArray("brain")]
+script = ExtResource("3_0euyc")
+brain = NodePath("../DuckBrain")
+
+[node name="DuckMovement" type="Node" parent="." node_paths=PackedStringArray("body", "animator")]
+script = ExtResource("4_665th")
+body = NodePath("..")
+animator = NodePath("../DuckModelPlaceholder/AnimationPlayer")
 
 [node name="DuckModelPlaceholder" parent="." instance=ExtResource("5_2loab")]
 

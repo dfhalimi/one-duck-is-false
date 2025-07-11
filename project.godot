@@ -15,6 +15,11 @@ run/main_scene="res://scenes/main/main.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+game_manager="*res://scripts/game_manager.gd"
+objective_manager="*res://scripts/objective_manager.gd"
+
 [input]
 
 move_forward={

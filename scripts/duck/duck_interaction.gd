@@ -1,0 +1,33 @@
+class_name DuckInteraction
+extends Node
+
+@export var brain: DuckBrain
+
+func pet() -> void:
+	var pet_counter: int = brain.pet_counter
+	objective_manager.notify_event(Objective.Type.PET_DUCK, brain.duck_name)
+	brain.pet_counter += 1
+	var duck_name: String = brain.duck_name
+	
+	if brain.traits.has(brain.Trait.DISLIKES_PETTING):
+		print(brain.duck_name + " didn't really enjoy that...")
+	else:
+		if pet_counter < 3:
+			print(duck_name + " flaps happily.")
+		elif pet_counter < 5:
+			print(duck_name + " flaps a little less enthusiastically...")
+		elif pet_counter < 10:
+			print(duck_name + " is thinking this is enough petting for now...")
+		else:
+			print("OH MY GOD WOULD YOU STOP PETTING " + duck_name + " ALREADY?!")
+
+func feed() -> void:
+	objective_manager.notify_event(Objective.Type.FEED_DUCKS)
+	
+	if brain.traits.has(brain.Trait.NOT_HUNGRY):
+		print(brain.duck_name + " doesn't seem too hungry...")
+	else:
+		print(brain.duck_name + " munches the food happily.")
+
+func accuse() -> void:
+	game_manager.handle_accusation_result(brain.is_false_duck)

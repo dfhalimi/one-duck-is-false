@@ -3,6 +3,7 @@
 .mono/
 .editorconfig
 .godot/editor_settings-*.tpl
+.idea
 *.tmp
 export.cfg
 export_presets.cfg

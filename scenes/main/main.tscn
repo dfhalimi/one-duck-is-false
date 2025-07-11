@@ -1,10 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://b0jln8tvbjy1n"]
+[gd_scene load_steps=11 format=3 uid="uid://b0jln8tvbjy1n"]
 
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_t6syr"]
 [ext_resource type="PackedScene" uid="uid://bh2mklahppagg" path="res://scenes/main/player.tscn" id="1_yns6y"]
-[ext_resource type="Script" path="res://scripts/game_manager.gd" id="2_288ru"]
 [ext_resource type="PackedScene" uid="uid://6rs2sd0g3eh0" path="res://scenes/main/box.tscn" id="2_igf6o"]
 [ext_resource type="PackedScene" uid="uid://8e15q3lh2a71" path="res://scenes/ducks/duck.tscn" id="3_dg6jb"]
-[ext_resource type="Script" path="res://scripts/objective_manager.gd" id="3_u8afp"]
 [ext_resource type="Script" path="res://scripts/zone.gd" id="5_fnass"]
 [ext_resource type="PackedScene" uid="uid://cq1305xcyvifm" path="res://scenes/main/mailbox.tscn" id="6_3xd66"]
 [ext_resource type="PackedScene" uid="uid://b3xyx2e5ubw4f" path="res://scenes/main/food_tray.tscn" id="8_8htiy"]
@@ -17,18 +16,13 @@ data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0
 [sub_resource type="BoxShape3D" id="BoxShape3D_w2tic"]
 
 [node name="Main" type="Node3D"]
+script = ExtResource("1_t6syr")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.912998, 0.407964, 0, -0.407964, 0.912998, 0, 0.428689, 0)
 
 [node name="Player" parent="." instance=ExtResource("1_yns6y")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.928, 1, 2.9959)
-
-[node name="GameManager" type="Node" parent="."]
-script = ExtResource("2_288ru")
-
-[node name="ObjectiveManager" type="Node" parent="."]
-script = ExtResource("3_u8afp")
 
 [node name="UI" type="Node" parent="."]
 
@@ -157,6 +151,28 @@ theme_override_font_sizes/font_size = 32
 text = "The next day..."
 horizontal_alignment = 1
 
+[node name="HintPopup" type="Panel" parent="UI/Control"]
+visible = false
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 651.0
+
+[node name="HintLabel" type="Label" parent="UI/Control/HintPopup"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -423.0
+offset_top = -22.5
+offset_right = 423.0
+offset_bottom = 22.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 32
+horizontal_alignment = 1
+
 [node name="Pen" parent="." instance=ExtResource("2_igf6o")]
 transform = Transform3D(4, 0, 0, 0, 3, 0, 0, 0, 8.2, 11.3903, 0.996771, -12.0282)
 
@@ -178,41 +194,39 @@ shape = SubResource("ConcavePolygonShape3D_4jm6v")
 
 [node name="Duck" parent="Ducks" instance=ExtResource("3_dg6jb")]
 transform = Transform3D(-1.5, 0, 1.31134e-07, 0, 1.5, 0, -1.31134e-07, 0, -1.5, 5.86581, 0, -13.7671)
-speed = 1.0
-duck_name = "Torben"
+
+[node name="DuckBrain" parent="Ducks/Duck" index="0"]
+duck_name = "Super Duck"
 
 [node name="Duck2" parent="Ducks" instance=ExtResource("3_dg6jb")]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -3, 0, 17)
-speed = 1.0
 
 [node name="Duck7" parent="Ducks" instance=ExtResource("3_dg6jb")]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 3, 0, 16)
-speed = 1.0
 
 [node name="Duck8" parent="Ducks" instance=ExtResource("3_dg6jb")]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -2, 0, 13)
-speed = 1.0
 
 [node name="Duck9" parent="Ducks" instance=ExtResource("3_dg6jb")]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -7, 0, 10)
-speed = 1.0
 
 [node name="Duck3" parent="Ducks" instance=ExtResource("3_dg6jb")]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 2, 0, 11)
-speed = 1.0
 
 [node name="Duck4" parent="Ducks" instance=ExtResource("3_dg6jb")]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -2, 0, 8)
-speed = 1.0
 
 [node name="Duck5" parent="Ducks" instance=ExtResource("3_dg6jb")]
 transform = Transform3D(-1.5, 0, 1.31134e-07, 0, 1.5, 0, -1.31134e-07, 0, -1.5, 1.86581, 0, -13.7671)
-speed = 1.0
-duck_name = "Lady Gaga"
+
+[node name="DuckBrain" parent="Ducks/Duck5" index="0"]
+duck_name = "Torben"
 
 [node name="Duck6" parent="Ducks" instance=ExtResource("3_dg6jb")]
 transform = Transform3D(-1.5, 0, 1.31134e-07, 0, 1.5, 0, -1.31134e-07, 0, -1.5, 2.11281, 0, -9.75912)
-duck_name = "Super Duck"
+
+[node name="DuckBrain" parent="Ducks/Duck6" index="0"]
+duck_name = "Lady Gaga"
 
 [node name="LakeZone" type="Area3D" parent="." groups=["zones"]]
 transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 17)
@@ -254,3 +268,22 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 8.4732
 [connection signal="body_exited" from="PenZone" to="PenZone" method="_on_body_exited"]
 [connection signal="body_entered" from="HouseZone" to="HouseZone" method="_on_body_entered"]
 [connection signal="body_exited" from="HouseZone" to="HouseZone" method="_on_body_exited"]
+
+[editable path="Ducks/Duck"]
+[editable path="Ducks/Duck/DuckModelPlaceholder"]
+[editable path="Ducks/Duck2"]
+[editable path="Ducks/Duck2/DuckModelPlaceholder"]
+[editable path="Ducks/Duck7"]
+[editable path="Ducks/Duck7/DuckModelPlaceholder"]
+[editable path="Ducks/Duck8"]
+[editable path="Ducks/Duck8/DuckModelPlaceholder"]
+[editable path="Ducks/Duck9"]
+[editable path="Ducks/Duck9/DuckModelPlaceholder"]
+[editable path="Ducks/Duck3"]
+[editable path="Ducks/Duck3/DuckModelPlaceholder"]
+[editable path="Ducks/Duck4"]
+[editable path="Ducks/Duck4/DuckModelPlaceholder"]
+[editable path="Ducks/Duck5"]
+[editable path="Ducks/Duck5/DuckModelPlaceholder"]
+[editable path="Ducks/Duck6"]
+[editable path="Ducks/Duck6/DuckModelPlaceholder"]
