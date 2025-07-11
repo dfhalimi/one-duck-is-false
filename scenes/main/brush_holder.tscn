@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://d028ajclojpaf"]
+
+[ext_resource type="Script" path="res://scripts/brush_holder.gd" id="1_2lwx8"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_wgr52"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_018ig"]
+size = Vector3(2.0014, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fp71v"]
+size = Vector3(2.96947, 1.29346, 3.02463)
+
+[node name="BrushHolder" type="StaticBody3D"]
+script = ExtResource("1_2lwx8")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_wgr52")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_018ig")
+
+[node name="InteractionArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.45)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0713005, 0.146729, -0.640091)
+shape = SubResource("BoxShape3D_fp71v")
+
+[node name="PromptLabel" type="Label3D" parent="InteractionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.38, -0.9)
+visible = false
+text = "[E] Pick up brush"
+
+[connection signal="body_entered" from="InteractionArea" to="." method="_on_body_entered"]
+[connection signal="body_exited" from="InteractionArea" to="." method="_on_body_exited"]

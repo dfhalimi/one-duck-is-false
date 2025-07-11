@@ -18,20 +18,22 @@ func _on_body_entered(body) -> void:
 	if body is Player and not food_taken:
 		print("Player entered food tray area")
 		player_nearby = true
-		prompt.visible = true
+		
+		if not player.is_holding_brush:
+			prompt.visible = true
 
 func _on_body_exited(body) -> void:
-	if body.name == "Player":
+	if body is Player:
+		print("Player exited food tray area")
 		player_nearby = false
 		prompt.visible = false
 		
 func _on_has_fed_duck() -> void:
 	print("Duck has been fed")
-	prompt.visible = true
 	food_taken = false
 
 func _process(_delta) -> void:
-	if player_nearby and Input.is_action_just_pressed("interact") and not food_taken:
+	if player_nearby and Input.is_action_just_pressed("interact") and not food_taken and player.held_duck == null and not player.is_holding_brush:
 		print("Taking food...")
 		food_taken = true
 		prompt.visible = false

@@ -33,6 +33,7 @@ func die() -> void:
 func pet(): interaction.pet()
 func tickle(): interaction.tickle()
 func feed(): interaction.feed()
+func brush(): interaction.brush()
 func accuse(): interaction.accuse()
 
 func set_new_spawn_origin() -> void:

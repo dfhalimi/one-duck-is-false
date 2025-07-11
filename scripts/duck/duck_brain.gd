@@ -4,6 +4,7 @@ extends Node
 enum Trait {
 	NOT_HUNGRY,
 	DISLIKES_PETTING,
+	DISLIKES_BRUSHING,
 	STARES_AT_PLAYER
 }
 
@@ -19,7 +20,7 @@ func _ready() -> void:
 	assign_random_traits()
 
 func assign_random_traits():
-	var all_traits = [Trait.NOT_HUNGRY, Trait.DISLIKES_PETTING, Trait.STARES_AT_PLAYER]
+	var all_traits = [Trait.NOT_HUNGRY, Trait.DISLIKES_PETTING, Trait.DISLIKES_BRUSHING, Trait.STARES_AT_PLAYER]
 	var max_traits = 1
 	
 	while traits.size() < max_traits:

@@ -15,6 +15,7 @@ extends CharacterBody3D
 @onready var confirm_button: Button = $"../UI/Control/NamingPanel/ConfirmButton"
 
 @onready var food_tray: FoodTray = $"../FoodTray"
+@onready var brush_holder: BrushHolder = $"../BrushHolder"
 
 signal has_fed_duck
 
@@ -24,6 +25,7 @@ var pitch : float = 0.0
 var current_zone: String = ""
 var held_duck: Duck = null
 var is_holding_food: bool = false
+var is_holding_brush: bool = false
 
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -33,11 +35,12 @@ func _ready() -> void:
 	
 	name_input.text_submitted.connect(_on_name_entered)
 	food_tray.has_food_taken.connect(_on_has_food_taken)
+	brush_holder.has_taken_brush.connect(_on_has_taken_brush)
+	brush_holder.has_returned_brush.connect(_on_has_returned_brush)
 	
 func _process(_delta) -> void:
 	# Priority: if holding a duck, show drop and contextual prompts
 	if held_duck is Duck:
-		# Show contextual action prompt (e.g., tickle/brush)
 		interact_prompt_label.text = "[E] Tickle " + held_duck.duck_name + "\n[F] Put down " + held_duck.duck_name
 		interact_prompt_label.visible = true
 		return
@@ -50,16 +53,21 @@ func _process(_delta) -> void:
 			var duck: Duck = hit
 			var duck_name: String = duck.duck_name
 
-			# Contextual action prompt (pet/feed/tickle)
-			var action_prompt := "[E] Pet " + duck_name
 			if is_holding_food:
-				action_prompt = "[E] Feed " + duck_name
-			# You can add more context checks here for other actions
-
-			# Show both prompts
-			interact_prompt_label.text = action_prompt + "\n[F] Pick up " + duck_name
-			interact_prompt_label.visible = true
-			return
+				# Only show feed prompt when holding food
+				interact_prompt_label.text = "[E] Feed " + duck_name
+				interact_prompt_label.visible = true
+				return
+			elif is_holding_brush:
+				interact_prompt_label.text = "[E] Brush " + duck_name
+				interact_prompt_label.visible = true
+				return
+			else:
+				# Show both prompts when not holding food
+				var action_prompt := "[E] Pet " + duck_name
+				interact_prompt_label.text = action_prompt + "\n[F] Pick up " + duck_name
+				interact_prompt_label.visible = true
+				return
 
 	# No valid duck target
 	interact_prompt_label.visible = false
@@ -101,7 +109,7 @@ func _unhandled_input(event) -> void:
 	if event.is_action_pressed("pick_up_drop"):
 		if held_duck:
 			drop_held_duck()
-		elif ray.is_colliding():
+		elif ray.is_colliding() and not is_holding_food and not is_holding_brush:
 			var hit: Object = ray.get_collider()
 			if hit is Duck and not held_duck:
 				pick_up(hit)
@@ -117,6 +125,8 @@ func _unhandled_input(event) -> void:
 					hit.feed()
 					has_fed_duck.emit()
 					is_holding_food = false
+				elif is_holding_brush:
+					hit.brush()
 				else:
 					hit.pet()
 				
@@ -215,3 +225,9 @@ func _on_name_entered(text) -> void:
 		
 func _on_has_food_taken() -> void:
 	is_holding_food = true
+	
+func _on_has_taken_brush() -> void:
+	is_holding_brush = true
+	
+func _on_has_returned_brush() -> void:
+	is_holding_brush = false

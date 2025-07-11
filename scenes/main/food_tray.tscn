@@ -18,7 +18,6 @@ transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_dr3aw")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00195312, 0, 0)
 shape = SubResource("BoxShape3D_7umpb")
 
 [node name="InteractionArea" type="Area3D" parent="."]

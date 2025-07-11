@@ -42,6 +42,14 @@ func feed() -> void:
 		print(brain.duck_name + " doesn't seem too hungry...")
 	else:
 		print(brain.duck_name + " munches the food happily.")
+		
+func brush() -> void:
+	objective_manager.notify_event(Objective.Type.BRUSH_DUCKS)
+	
+	if brain.traits.has(brain.Trait.DISLIKES_BRUSHING):
+		print(brain.duck_name + " is really not enjoying this...")
+	else:
+		print(brain.duck_name + " is enjoying the brushing.")
 
 func accuse() -> void:
 	game_manager.handle_accusation_result(brain.is_false_duck)

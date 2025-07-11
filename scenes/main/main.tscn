@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b0jln8tvbjy1n"]
+[gd_scene load_steps=12 format=3 uid="uid://b0jln8tvbjy1n"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_t6syr"]
 [ext_resource type="PackedScene" uid="uid://bh2mklahppagg" path="res://scenes/main/player.tscn" id="1_yns6y"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/zone.gd" id="5_fnass"]
 [ext_resource type="PackedScene" uid="uid://cq1305xcyvifm" path="res://scenes/main/mailbox.tscn" id="6_3xd66"]
 [ext_resource type="PackedScene" uid="uid://b3xyx2e5ubw4f" path="res://scenes/main/food_tray.tscn" id="8_8htiy"]
+[ext_resource type="PackedScene" uid="uid://d028ajclojpaf" path="res://scenes/main/brush_holder.tscn" id="8_mb5u4"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_u2kuf"]
 
@@ -258,7 +259,10 @@ shape = SubResource("BoxShape3D_w2tic")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0.3096, -6)
 
 [node name="FoodTray" parent="." instance=ExtResource("8_8htiy")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 8.47321, 0.398293, -13.0447)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 8.5, 0.398, -14.045)
+
+[node name="BrushHolder" parent="." instance=ExtResource("8_mb5u4")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 8.5, 0.4, -10)
 
 [connection signal="text_submitted" from="UI/Control/NamingPanel/NameInput" to="Player" method="_on_name_input_text_submitted"]
 [connection signal="pressed" from="UI/Control/NamingPanel/ConfirmButton" to="Player" method="_on_confirm_button_pressed"]

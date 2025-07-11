@@ -1,7 +1,12 @@
 class_name Objective
 extends RefCounted  # lightweight class
 
-enum Type { DUCKS_IN_PEN, PET_DUCK, FEED_DUCKS }
+enum Type {
+	DUCKS_IN_PEN,
+	PET_DUCK,
+	FEED_DUCKS,
+	BRUSH_DUCKS
+}
 
 var type: Type
 var amount: int = 1
