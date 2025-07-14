@@ -36,7 +36,7 @@ func tickle()-> void:
 		print("STOP IT YOU MONSTER " + duck_name + " IS THIS CLOSE TO GETTING A HEART ATTACK!!!")
 
 func feed() -> void:
-	objective_manager.notify_event(Objective.Type.FEED_DUCKS)
+	objective_manager.notify_event(Objective.Type.FEED_DUCK, brain.duck_name)
 	
 	if brain.traits.has(brain.Trait.NOT_HUNGRY):
 		print(brain.duck_name + " doesn't seem too hungry...")
@@ -44,12 +44,20 @@ func feed() -> void:
 		print(brain.duck_name + " munches the food happily.")
 		
 func brush() -> void:
-	objective_manager.notify_event(Objective.Type.BRUSH_DUCKS)
+	objective_manager.notify_event(Objective.Type.BRUSH_DUCK, brain.duck_name)
 	
 	if brain.traits.has(brain.Trait.DISLIKES_BRUSHING):
 		print(brain.duck_name + " is really not enjoying this...")
 	else:
 		print(brain.duck_name + " is enjoying the brushing.")
+		
+func bathe() -> void:
+	objective_manager.notify_event(Objective.Type.BATHE_DUCK, brain.duck_name)
+	
+	if brain.traits.has(brain.Trait.DISLIKES_BATHING):
+		print(brain.duck_name + " accepts their fate...")
+	else:
+		print(brain.duck_name + " is loving that bath!")
 
 func accuse() -> void:
-	game_manager.handle_accusation_result(brain.is_false_duck)
+	pass

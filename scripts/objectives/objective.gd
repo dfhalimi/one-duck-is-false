@@ -4,8 +4,9 @@ extends RefCounted  # lightweight class
 enum Type {
 	DUCKS_IN_PEN,
 	PET_DUCK,
-	FEED_DUCKS,
-	BRUSH_DUCKS
+	FEED_DUCK,
+	BRUSH_DUCK,
+	BATHE_DUCK
 }
 
 var type: Type

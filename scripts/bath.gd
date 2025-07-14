@@ -63,6 +63,5 @@ func _process(_delta) -> void:
 			print("Giving " + duck_name + " a nice little bath...")
 			duck_currently_in_bath = player.held_duck
 			prompt.text = "[E] Pick up " + duck_name
-			# Move duck to bath position and disable movement/animation
 			has_put_duck_into_bath.emit(duck_currently_in_bath)
 			bathing_point.add_child(duck_currently_in_bath)

@@ -242,11 +242,12 @@ func _on_has_taken_brush() -> void:
 func _on_has_returned_brush() -> void:
 	is_holding_brush = false
 
-func _on_duck_put_in_bath(duck):
+func _on_duck_put_in_bath(duck: Duck):
+	duck.bathe()
 	duck_hold_point.remove_child(duck)
 	held_duck = null
 
-func _on_duck_retrieved_from_bath(duck):
+func _on_duck_retrieved_from_bath(duck: Duck):
 	pick_up(duck)
 
 func _on_player_entered_bath_area():
