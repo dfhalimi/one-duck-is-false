@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://d2kwjwx5apbrv"]
+
+[ext_resource type="PackedScene" uid="uid://b3fpiek3na0xa" path="res://scenes/main/house_scene.tscn" id="1_y8hmn"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gme1t"]
+size = Vector3(7.19873, 6.30475, 4.90538)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_iewb5"]
+size = Vector3(2.03833, 0.284546, 1.6876)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_57gld"]
+size = Vector3(2.04065, 0.299561, 1.21875)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1r3ru"]
+size = Vector3(2.0401, 0.498459, 1.0303)
+
+[node name="House" type="StaticBody3D"]
+
+[node name="house" parent="." instance=ExtResource("1_y8hmn")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0930176, 3.11998, -0.0467758)
+shape = SubResource("BoxShape3D_gme1t")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.085083, 0.107609, 3.02373)
+shape = SubResource("BoxShape3D_iewb5")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0822144, 0.384037, 2.79765)
+shape = SubResource("BoxShape3D_57gld")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.857293, -0.514829, 0, 0.514829, 0.857293, -0.0843811, 0.0537337, 3.71542)
+shape = SubResource("BoxShape3D_1r3ru")
+
+[editable path="house"]

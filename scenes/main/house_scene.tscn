@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://b3fpiek3na0xa"]
+
+[ext_resource type="PackedScene" uid="uid://br4aba2vl7sho" path="res://assets/models/house.glb" id="1_utkko"]
+
+[node name="house" instance=ExtResource("1_utkko")]
+
+[node name="Chimney" parent="." index="0"]
+transform = Transform3D(0, 0, -0.3084, 0, 1.3878, 0, 0.3084, 0, 0, 2.55982, 5.25259, 0.907471)
+
+[node name="Door" parent="." index="1"]
+transform = Transform3D(0, 0, -1.2, 0, 1.2, 0, 1.2, 0, 0, -0.0835161, 1.68997, 2.23679)
+
+[node name="HouseWalls" parent="." index="2"]
+transform = Transform3D(0, 0, -1.2, 0, 1.2, 0, 1.2, 0, 0, -0.0835161, 2.10215, -0.0739112)
+
+[node name="Roof" parent="." index="3"]
+transform = Transform3D(0, 0, -4.00974, 0, 2.1, 0, 2.4, 0, 0, -0.0835161, 2.10215, -0.0739112)
+
+[node name="Window" parent="." index="4"]
+transform = Transform3D(0, 0, -1.2, 0, 1.2, 0, 1.2, 0, 0, -0.0835161, 0.00214821, -0.0739112)

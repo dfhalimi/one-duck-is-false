@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://bjm1q74srasjg"]
+
+[ext_resource type="PackedScene" uid="uid://bugf73qyyni78" path="res://assets/models/brush.glb" id="1_f3v21"]
+
+[node name="brush" instance=ExtResource("1_f3v21")]

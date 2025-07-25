@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://cbmf6j5g2ft2p"]
+
+[ext_resource type="Script" path="res://scripts/brush.gd" id="1_u6jxt"]
+[ext_resource type="PackedScene" uid="uid://bjm1q74srasjg" path="res://scenes/main/brush_scene.tscn" id="1_uxwtn"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7pj56"]
+size = Vector3(0.603577, 0.24411, 0.221405)
+
+[node name="Brush" type="Area3D"]
+script = ExtResource("1_u6jxt")
+
+[node name="brush" parent="." instance=ExtResource("1_uxwtn")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.15527e-05, 0.124069, 0.000320435)
+shape = SubResource("BoxShape3D_7pj56")

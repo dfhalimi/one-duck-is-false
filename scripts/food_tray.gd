@@ -4,6 +4,7 @@ extends StaticBody3D
 @onready var interaction_area: Area3D = $InteractionArea
 @onready var prompt: Label3D = $InteractionArea/PromptLabel
 @onready var player: Player = $"../Player"
+@onready var audio_stream_player: AudioStreamPlayer3D = $AudioStreamPlayer3D
 
 var player_nearby : bool = false
 var food_taken : bool = false
@@ -19,7 +20,7 @@ func _on_body_entered(body) -> void:
 		print("Player entered food tray area")
 		player_nearby = true
 		
-		if not player.is_holding_brush:
+		if not player.held_brush:
 			prompt.visible = true
 
 func _on_body_exited(body) -> void:
@@ -33,8 +34,10 @@ func _on_has_fed_duck() -> void:
 	food_taken = false
 
 func _process(_delta) -> void:
-	if player_nearby and Input.is_action_just_pressed("interact") and not food_taken and player.held_duck == null and not player.is_holding_brush:
+	if player_nearby and Input.is_action_just_pressed("interact") and not food_taken and player.held_duck == null and not player.held_brush:
 		print("Taking food...")
 		food_taken = true
 		prompt.visible = false
 		has_food_taken.emit()
+		audio_stream_player.pitch_scale = randf_range(0.9, 1.1)
+		audio_stream_player.play()

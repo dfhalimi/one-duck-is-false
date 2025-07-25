@@ -1,36 +1,39 @@
-[gd_scene load_steps=5 format=3 uid="uid://b3xyx2e5ubw4f"]
+[gd_scene load_steps=6 format=3 uid="uid://b3xyx2e5ubw4f"]
 
 [ext_resource type="Script" path="res://scripts/food_tray.gd" id="1_xvmjc"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_dr3aw"]
+[ext_resource type="PackedScene" uid="uid://bhgii07415c2s" path="res://scenes/main/food_tray_scene.tscn" id="2_d5c7q"]
+[ext_resource type="AudioStream" uid="uid://c4vrtr5b41lrk" path="res://assets/sfx/food_pickup.mp3" id="3_ayj3h"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7umpb"]
-size = Vector3(1.99756, 1, 1)
+size = Vector3(1.99756, 0.757599, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2fy15"]
-size = Vector3(2.94217, 1.28711, 3.01993)
+size = Vector3(2.94217, 1.15674, 3.01993)
 
 [node name="FoodTray" type="StaticBody3D"]
 script = ExtResource("1_xvmjc")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-mesh = SubResource("BoxMesh_dr3aw")
+[node name="food_tray" parent="." instance=ExtResource("2_d5c7q")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.366745, 0)
 shape = SubResource("BoxShape3D_7umpb")
 
 [node name="InteractionArea" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.45178)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0797176, 0.160002, -0.632966)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0797176, 0.693983, -0.632966)
 shape = SubResource("BoxShape3D_2fy15")
 
 [node name="PromptLabel" type="Label3D" parent="InteractionArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.383984, -0.904571)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.550004, -0.899287)
 visible = false
 text = "[E] Take food"
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.519516, 0)
+stream = ExtResource("3_ayj3h")
 
 [connection signal="body_entered" from="InteractionArea" to="." method="_on_body_entered"]
 [connection signal="body_exited" from="InteractionArea" to="." method="_on_body_exited"]

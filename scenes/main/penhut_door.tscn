@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://s27hdwikklej"]
+
+[ext_resource type="PackedScene" uid="uid://cb6c5jryk043t" path="res://scenes/main/penhut_door_scene.tscn" id="1_0tt7a"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rgmgr"]
+size = Vector3(1.43896, 2.52649, 0.106689)
+
+[node name="PenhutDoor" type="StaticBody3D"]
+
+[node name="penhut_door" parent="." instance=ExtResource("1_0tt7a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.79191, 0, -1.49929)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.721784, 1.26319, 0.000789762)
+shape = SubResource("BoxShape3D_rgmgr")

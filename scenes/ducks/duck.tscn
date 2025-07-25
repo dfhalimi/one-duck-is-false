@@ -1,13 +1,30 @@
-[gd_scene load_steps=7 format=3 uid="uid://8e15q3lh2a71"]
+[gd_scene load_steps=17 format=3 uid="uid://8e15q3lh2a71"]
 
 [ext_resource type="Script" path="res://scripts/duck/duck.gd" id="1_biaul"]
 [ext_resource type="Script" path="res://scripts/duck/duck_brain.gd" id="2_skmmq"]
 [ext_resource type="Script" path="res://scripts/duck/duck_interaction.gd" id="3_0euyc"]
 [ext_resource type="Script" path="res://scripts/duck/duck_movement.gd" id="4_665th"]
 [ext_resource type="PackedScene" uid="uid://dacb2afccms24" path="res://assets/models/lowpoly_duck_animated.glb" id="5_2loab"]
+[ext_resource type="AudioStream" uid="uid://4mdkdr5ffbam" path="res://assets/sfx/brush_test.mp3" id="6_7ly2v"]
+[ext_resource type="PackedScene" uid="uid://djhteq8ffix0b" path="res://scenes/main/reaction_label.tscn" id="6_p1q0s"]
+[ext_resource type="AudioStream" uid="uid://ia8063ks0uqo" path="res://assets/sfx/duck_laugh.mp3" id="7_hw16r"]
+[ext_resource type="AudioStream" uid="uid://cw7k06ohm6akr" path="res://assets/sfx/duck_petting_001.mp3" id="7_pf6rh"]
+[ext_resource type="AudioStream" uid="uid://cpkueviyet5yu" path="res://assets/sfx/duck_petting_002.mp3" id="8_sb6uj"]
+[ext_resource type="AudioStream" uid="uid://tpkbbn1e6qfw" path="res://assets/sfx/duck_quack.mp3" id="8_ws14e"]
+[ext_resource type="AudioStream" uid="uid://c4yv5yf8f3iow" path="res://assets/sfx/duck_petting_003.mp3" id="9_87dbb"]
+[ext_resource type="AudioStream" uid="uid://bdpstie47l56w" path="res://assets/sfx/food_munch.mp3" id="9_mvsgo"]
+[ext_resource type="AudioStream" uid="uid://byh0mp3kvk0g" path="res://assets/sfx/duck_petting_004.mp3" id="10_0phc0"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cy2lh"]
 size = Vector3(0.414551, 0.689329, 0.613281)
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_54nbd"]
+random_pitch = 1.2
+streams_count = 4
+stream_0/stream = ExtResource("7_pf6rh")
+stream_1/stream = ExtResource("8_sb6uj")
+stream_2/stream = ExtResource("9_87dbb")
+stream_3/stream = ExtResource("10_0phc0")
 
 [node name="Duck" type="CharacterBody3D" groups=["ducks"]]
 transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
@@ -39,5 +56,34 @@ bones/8/rotation = Quaternion(0.663365, -0.0366768, 0.026204, 0.746937)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0124512, 0.348916, -0.0351562)
 shape = SubResource("BoxShape3D_cy2lh")
+
+[node name="ReactionLabel" parent="." instance=ExtResource("6_p1q0s")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.769349, 0)
+
+[node name="BrushAudio" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(0.666667, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, 0, 0.360891, 0)
+stream = ExtResource("6_7ly2v")
+
+[node name="PetAudio" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(0.666667, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, 0, 0.360891, 0)
+stream = SubResource("AudioStreamRandomizer_54nbd")
+
+[node name="LaughAudio" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(0.666667, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, 0, 0.546345, -0.30012)
+stream = ExtResource("7_hw16r")
+
+[node name="QuackAudio" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(0.666667, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, 0, 0.54764, -0.299188)
+stream = ExtResource("8_ws14e")
+
+[node name="MunchAudio" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(0.666667, 0, 0, 0, 0.666667, 0, 0, 0, 0.666667, 0, 0.545094, -0.297553)
+stream = ExtResource("9_mvsgo")
+
+[node name="QuackTimer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[connection signal="timeout" from="QuackTimer" to="." method="_on_quack_timer_timeout"]
 
 [editable path="DuckModelPlaceholder"]

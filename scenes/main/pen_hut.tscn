@@ -1,0 +1,177 @@
+[gd_scene load_steps=17 format=3 uid="uid://dx5tqk11kycsd"]
+
+[ext_resource type="PackedScene" uid="uid://b3pgdh0icq5o3" path="res://scenes/main/penhut_scene.tscn" id="1_t3bm4"]
+[ext_resource type="Script" path="res://scripts/pen_hut.gd" id="1_ta5d1"]
+[ext_resource type="PackedScene" uid="uid://s27hdwikklej" path="res://scenes/main/penhut_door.tscn" id="2_hj4v5"]
+[ext_resource type="AudioStream" uid="uid://qldikpsoo48r" path="res://assets/sfx/door_open.mp3" id="4_kf0m2"]
+[ext_resource type="AudioStream" uid="uid://b7ogjqwek4vcc" path="res://assets/sfx/door_close.mp3" id="5_6y5ov"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_j302k"]
+size = Vector3(2.84046, 2.88287, 0.162824)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cvtmw"]
+size = Vector3(0.137833, 2.80853, 2.99194)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mwxyf"]
+size = Vector3(4.98389, 2.78809, 0.150993)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gjm03"]
+size = Vector3(0.198395, 2.99109, 2.99878)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_e6cv4"]
+size = Vector3(5.00061, 0.02771, 2.98985)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qdcnr"]
+size = Vector3(1.64459, 2.63208, 1.50818)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_co1wo"]
+size = Vector3(5.01697, 4.46011, 4.32978)
+
+[sub_resource type="Animation" id="Animation_g4tym"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PenhutDoor:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_0hvuy"]
+resource_name = "close_door"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PenhutDoor:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -1.39626, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CloseDoorAudio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.4),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_6h0gm"]
+resource_name = "open_door"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("PenhutDoor:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -1.39626, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("OpenDoorAudio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_forwr"]
+_data = {
+"RESET": SubResource("Animation_g4tym"),
+"close_door": SubResource("Animation_0hvuy"),
+"open_door": SubResource("Animation_6h0gm")
+}
+
+[node name="PenHut" type="StaticBody3D" groups=["wood"]]
+collision_layer = 4
+script = ExtResource("1_ta5d1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.07436, 1.43991, 1.48894)
+shape = SubResource("BoxShape3D_j302k")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.48777, 1.40885, 0.0162354)
+shape = SubResource("BoxShape3D_cvtmw")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00219727, 1.39337, -1.49851)
+shape = SubResource("BoxShape3D_mwxyf")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.49711, 1.49635, -0.00305176)
+shape = SubResource("BoxShape3D_gjm03")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00323486, -0.0101641, -0.00443268)
+shape = SubResource("BoxShape3D_e6cv4")
+
+[node name="penhut" parent="." instance=ExtResource("1_t3bm4")]
+
+[node name="PenhutDoor" parent="." instance=ExtResource("2_hj4v5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7967, 0, 1.51675)
+
+[node name="InteractionArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.08112, 0.508844, 1.43969)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00595093, 0.81604, 0.664124)
+shape = SubResource("BoxShape3D_qdcnr")
+
+[node name="PromptLabel" type="Label3D" parent="InteractionArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78532, 0.191528)
+visible = false
+text = "[E] Open"
+
+[node name="HutArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.491514, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HutArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00653076, 1.73006, 0.666709)
+shape = SubResource("BoxShape3D_co1wo")
+
+[node name="OpenDoorAudio" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.470049, 1.26575, 1.605)
+stream = ExtResource("4_kf0m2")
+
+[node name="CloseDoorAudio" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.47, 1.266, 1.605)
+stream = ExtResource("5_6y5ov")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_forwr")
+}
+
+[connection signal="body_entered" from="InteractionArea" to="." method="_on_interaction_area_body_entered"]
+[connection signal="body_exited" from="InteractionArea" to="." method="_on_interaction_area_body_exited"]
+[connection signal="body_exited" from="HutArea" to="." method="_on_hut_area_body_exited"]
+
+[editable path="PenhutDoor"]

@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://b3b8dqmhk4lfv"]
+
+[ext_resource type="PackedScene" uid="uid://dy06ra12j5fex" path="res://assets/models/mailbox.glb" id="1_b7ikp"]
+
+[node name="mailbox" instance=ExtResource("1_b7ikp")]
+
+[node name="MailboxBeam" parent="." index="0"]
+transform = Transform3D(0.0991938, 0, 0, 0, 0.5, 0, 0, 0, 0.0991938, 0, 0.5, 0)
+
+[node name="MailboxBody" parent="." index="1"]
+transform = Transform3D(0.262731, 0, 0, 0, 0.257772, 0, 0, 0, 0.386386, 0, 1.22361, 0)
+
+[node name="MailboxDoor" parent="." index="2"]
+transform = Transform3D(0.262731, 0, 0, 0, 0.257772, 0, 0, 0, 0.386386, 0.00647543, 0.965758, 0.385324)

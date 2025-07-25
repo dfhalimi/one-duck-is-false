@@ -1,55 +1,41 @@
-[gd_scene load_steps=5 format=3 uid="uid://baspos8sf8ioe"]
+[gd_scene load_steps=6 format=3 uid="uid://baspos8sf8ioe"]
 
 [ext_resource type="Script" path="res://scripts/bath.gd" id="1_61sd0"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_cydlq"]
+[ext_resource type="PackedScene" uid="uid://chx2h250aikqx" path="res://scenes/main/bath_scene.tscn" id="2_bdxt5"]
+[ext_resource type="AudioStream" uid="uid://cddhi4rr111hd" path="res://assets/sfx/water_splash.mp3" id="3_2se0p"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xe18v"]
-size = Vector3(2.12866, 1.00452, 1.3114)
+size = Vector3(1.60498, 0.641382, 1.60348)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cuv43"]
-size = Vector3(2.85601, 1, 3.78558)
+size = Vector3(2.85601, 1, 3.92747)
 
 [node name="Bath" type="StaticBody3D"]
 script = ExtResource("1_61sd0")
 
-[node name="BathFloor" type="MeshInstance3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, 0.1, 0, 0, 0, 1.2, 0, -0.5, 0)
-mesh = SubResource("BoxMesh_cydlq")
-
-[node name="BathWall" type="MeshInstance3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, -4.37114e-09, -1, 0, 0.1, -4.37114e-08, 0, -0.05, 0.6)
-mesh = SubResource("BoxMesh_cydlq")
-
-[node name="BathWall2" type="MeshInstance3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, -4.37114e-09, -1, 0, 0.1, -4.37114e-08, 0, -0.05, -0.6)
-mesh = SubResource("BoxMesh_cydlq")
-
-[node name="BathWall3" type="MeshInstance3D" parent="."]
-transform = Transform3D(-5.68248e-08, 0.1, -4.37114e-08, 0, -4.37114e-09, -1, -1.3, -4.37114e-09, 1.91069e-15, 1, -0.05, 0)
-mesh = SubResource("BoxMesh_cydlq")
-
-[node name="BathWall4" type="MeshInstance3D" parent="."]
-transform = Transform3D(-5.68248e-08, 0.1, -4.37114e-08, 0, -4.37114e-09, -1, -1.3, -4.37114e-09, 1.91069e-15, -1, -0.05, 0)
-mesh = SubResource("BoxMesh_cydlq")
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00158691, -0.0480347, -0.0116577)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00195289, 0.315, -0.000442609)
 shape = SubResource("BoxShape3D_xe18v")
 
 [node name="InteractionArea" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00931978, 0, 0.942902)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00931978, 0.476649, 0.940819)
 shape = SubResource("BoxShape3D_cuv43")
 
 [node name="PromptLabel" type="Label3D" parent="InteractionArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.301328, 0.668608)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.450843, 0.829978)
 visible = false
 text = "[E] Bathe duck"
 
 [node name="BathingPoint" type="Node3D" parent="."]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.25, 0)
+
+[node name="bath" parent="." instance=ExtResource("2_bdxt5")]
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.430364, 0)
+stream = ExtResource("3_2se0p")
 
 [connection signal="body_entered" from="InteractionArea" to="." method="_on_body_entered"]
 [connection signal="body_exited" from="InteractionArea" to="." method="_on_body_exited"]

@@ -1,41 +1,133 @@
-[gd_scene load_steps=6 format=3 uid="uid://cq1305xcyvifm"]
+[gd_scene load_steps=11 format=3 uid="uid://cq1305xcyvifm"]
 
 [ext_resource type="Script" path="res://scripts/mailbox.gd" id="1_c5yot"]
+[ext_resource type="PackedScene" uid="uid://b3b8dqmhk4lfv" path="res://scenes/main/mailbox_scene.tscn" id="2_vra48"]
+[ext_resource type="AudioStream" uid="uid://dumbmt1p8ts" path="res://assets/sfx/mailbox_open.mp3" id="3_nd1hf"]
+[ext_resource type="AudioStream" uid="uid://clxm0m5vbjwrk" path="res://assets/sfx/mailbox_close.mp3" id="4_ik8fb"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_mfmw1"]
-size = Vector3(0.634888, 1.45, 0.78418)
-
-[sub_resource type="BoxMesh" id="BoxMesh_g8rpi"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_aekag"]
+size = Vector3(0.634888, 1.60439, 0.84375)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rkewc"]
-size = Vector3(1.87939, 1.39984, 2.13437)
+size = Vector3(1.87939, 1.77135, 2.22783)
+
+[sub_resource type="Animation" id="Animation_mlc7m"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("mailbox/MailboxDoor:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_nyn4m"]
+resource_name = "close_door"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("mailbox/MailboxDoor:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1.494, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MailboxCloseAudio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_7mwmm"]
+resource_name = "open_door"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("mailbox/MailboxDoor:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(1.49421, 0, 0)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MailboxOpenAudio")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [0.0],
+"method": &"play"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_o6mfy"]
+_data = {
+"RESET": SubResource("Animation_mlc7m"),
+"close_door": SubResource("Animation_nyn4m"),
+"open_door": SubResource("Animation_7mwmm")
+}
 
 [node name="Mailbox" type="StaticBody3D"]
 script = ExtResource("1_c5yot")
 
+[node name="mailbox" parent="." instance=ExtResource("2_vra48")]
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0108032, 0.348309, -0.00146484)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0108032, 0.81385, 0.0126953)
 shape = SubResource("BoxShape3D_mfmw1")
 
-[node name="MailboxBody" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.2, 0, 0, 0, 0.7, 0, 0, 0, 0.2, 0, 0, 0)
-mesh = SubResource("BoxMesh_g8rpi")
-
-[node name="MailboxHead" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0, 0.666027, 0)
-mesh = SubResource("BoxMesh_aekag")
-
 [node name="InteractionArea" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.488734, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0202637, 0.368317, 0.822783)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0202637, 0.426003, 0.776053)
 shape = SubResource("BoxShape3D_rkewc")
 
 [node name="PromptLabel" type="Label3D" parent="InteractionArea"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.671156, 0.524283)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.792589, 0.480193)
+visible = false
 text = "[E] Read Mail"
+
+[node name="MailboxOpenAudio" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15984, 0.485076)
+stream = ExtResource("3_nd1hf")
+
+[node name="MailboxCloseAudio" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15984, 0.485076)
+stream = ExtResource("4_ik8fb")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_o6mfy")
+}
 
 [connection signal="body_entered" from="InteractionArea" to="." method="_on_body_entered"]
 [connection signal="body_exited" from="InteractionArea" to="." method="_on_body_exited"]
+
+[editable path="mailbox"]

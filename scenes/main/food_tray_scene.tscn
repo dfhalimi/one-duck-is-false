@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://bhgii07415c2s"]
+
+[ext_resource type="PackedScene" uid="uid://bgmgrm16b4fuo" path="res://assets/models/food_tray.glb" id="1_45nci"]
+
+[node name="food_tray" instance=ExtResource("1_45nci")]

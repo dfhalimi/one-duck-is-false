@@ -5,6 +5,7 @@ extends StaticBody3D
 @onready var prompt: Label3D = $InteractionArea/PromptLabel
 @onready var player: Player = $"../Player"
 @onready var bathing_point: Node3D = $BathingPoint
+@onready var audio_stream_player: AudioStreamPlayer3D = $AudioStreamPlayer3D
 
 var player_nearby: bool = false
 var duck_currently_in_bath: Duck = null
@@ -27,7 +28,7 @@ func _on_body_entered(body: Node3D) -> void:
 			print("Player is holding food")
 		
 		if not player.held_duck:
-			if player.is_holding_food or player.is_holding_brush:
+			if player.is_holding_food or player.held_brush:
 				prompt.text = "Cannot bathe while holding food or brush."
 			elif duck_currently_in_bath:
 				prompt.text = "[E] Pick up " + duck_currently_in_bath.brain.duck_name
@@ -51,7 +52,7 @@ func _on_body_exited(body: Node3D) -> void:
 func _process(_delta) -> void:
 	if player_nearby and Input.is_action_just_pressed("interact"):
 		if not player.held_duck:
-			if duck_currently_in_bath and not player.is_holding_food and not player.is_holding_brush:
+			if duck_currently_in_bath and not player.is_holding_food and not player.held_brush:
 				var duck_name = duck_currently_in_bath.brain.duck_name
 				print("Picking up " + duck_name + " from their bath...")
 				var retrieved_duck = duck_currently_in_bath
@@ -65,3 +66,5 @@ func _process(_delta) -> void:
 			prompt.text = "[E] Pick up " + duck_name
 			has_put_duck_into_bath.emit(duck_currently_in_bath)
 			bathing_point.add_child(duck_currently_in_bath)
+			audio_stream_player.pitch_scale = randf_range(0.9, 1.1)
+			audio_stream_player.play()
